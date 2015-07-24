@@ -21,8 +21,20 @@ var template =
 '		<li class="timeline-event" ng-repeat="event in events"'+
 '			ng-mouseenter="selectedEvent[$index]=true"'+
 '			ng-mouseleave="selectedEvent[$index]=false"'+
-'			event-date="event.date"'+
-'			title="{{event.date}}"'+
+'			event-date="event.start_date"'+
+'			title="{{event.start_date}}"'+
+'			timeline-event-marker><span></span>'+
+'			<div class="timeline-event-box"'+
+'				ng-show="selectedEvent[$index]"'+
+'				ng-hide="!selectedEvent[$index]"'+
+'				ng-bind-html="event.content | unsafe">'+
+'			</div>'+
+'		</li>'+
+'		<li class="timeline-event" ng-repeat="event in events" ng-if="event.end_date"'+
+'			ng-mouseenter="selectedEvent[$index]=true"'+
+'			ng-mouseleave="selectedEvent[$index]=false"'+
+'			event-date="event.end_date"'+
+'			title="{{event.end_date}}"'+
 '			timeline-event-marker><span></span>'+
 '			<div class="timeline-event-box"'+
 '				ng-show="selectedEvent[$index]"'+
@@ -63,13 +75,13 @@ angular.module('angular-horizontal-timeline', ['ngSanitize'])
 
 		$scope.getPosition = function(date){
 			date = moment(date);
-			var diff = date.diff(moment($scope.startDate), 'months');
-			var curWeekWidth = 100/$scope.months[diff].days.length;
+      var month = date.month() - moment($scope.startDate).month();
+			var curWeekWidth = 100/$scope.months[month].days.length;
 			var monthsWidth = 100/$scope.months.length;
 			var ixOfWeek = Math.ceil(date.format('D')/7) - 1;
-			var curDOfMPercent = (date.format('D') - $scope.months[diff].days[ixOfWeek] ) * 14.28;
+			var curDOfMPercent = (date.format('D') - $scope.months[month].days[ixOfWeek] ) * 14.28;
 
-			return ( (monthsWidth * diff) + (((ixOfWeek * curWeekWidth) + (curDOfMPercent / 100 * curWeekWidth)) / 100 * monthsWidth) );
+      return ( (monthsWidth * month) + (((ixOfWeek * curWeekWidth) + (curDOfMPercent / 100 * curWeekWidth)) / 100 * monthsWidth) );
 		};
 
 		var range  = moment().range(moment($scope.startDate), moment($scope.endDate));
@@ -79,7 +91,7 @@ angular.module('angular-horizontal-timeline', ['ngSanitize'])
 				'name':month.format('MMMM'),
 				'days':[]});
 
-			var dayrange = moment().range(month.startOf('month').format('YYYY-MM-DD'), month.endOf('month').format('YYYY-MM-DD'));
+      var dayrange = moment().range(month.startOf('month').format('YYYY-MM-DD'), month.endOf('month').format('YYYY-MM-DD'));
 			dayrange.by('weeks', function(week) {
 				$scope.months[$scope.months.length - 1].days.push(week.format('DD'));
 			});
