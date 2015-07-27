@@ -27,8 +27,8 @@ var demoApp = angular.module('demoApp', ['angular-horizontal-timeline']);
 demoApp.controller('demoCtrl', function ($scope) {
   $scope.startDate = moment().subtract(2, 'months').format('YYYY-MM-DD');
   $scope.endDate = moment().add(2, 'months').format('YYYY-MM-DD');
-  $scope.events = [{'start_date': moment().subtract(7, 'days').format('YYYY-MM-DD'), 'end_date': moment().add(7, 'days').format('YYYY-MM-DD'), 'content':'<p>lorem ipsum</p>'},
-                   {'start_date': moment().subtract(6, 'days').format('YYYY-MM-DD'), 'content':'<p>dolor sit</p>'}];
+  $scope.events = [{'start_date': moment().subtract(7, 'days').format('YYYY-MM-DD'), 'end_date': moment().add(7, 'days').format('YYYY-MM-DD'), 'content':'<p>lorem ipsum</p>', 'color':'#0033CC'},
+                   {'start_date': moment().subtract(6, 'days').format('YYYY-MM-DD'), 'content':'<p>dolor sit</p>', 'color':'#DC143C'}];
 });
 </script>
 </head>

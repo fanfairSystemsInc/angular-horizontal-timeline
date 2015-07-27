@@ -23,7 +23,8 @@ var template =
 '			ng-mouseleave="selectedEvent[$index]=false"'+
 '			event-date="event.start_date"'+
 '			title="{{event.start_date}}"'+
-'			timeline-event-marker><span></span>'+
+'			timeline-event-marker>'+
+'     <span timeline-event-marker-knob></span>'+
 '			<div class="timeline-event-box"'+
 '				ng-show="selectedEvent[$index]"'+
 '				ng-hide="!selectedEvent[$index]"'+
@@ -35,7 +36,8 @@ var template =
 '			ng-mouseleave="selectedEvent[$index]=false"'+
 '			event-date="event.end_date"'+
 '			title="{{event.end_date}}"'+
-'			timeline-event-marker><span></span>'+
+'			timeline-event-marker>'+
+'     <span timeline-event-marker-knob></span>'+
 '			<div class="timeline-event-box"'+
 '				ng-show="selectedEvent[$index]"'+
 '				ng-hide="!selectedEvent[$index]"'+
@@ -127,7 +129,18 @@ angular.module('angular-horizontal-timeline', ['ngSanitize'])
 	function link(scope, element, attr) {
 		var eventDate = scope.$eval(attr.eventDate);
 		var pos = scope.getPosition(eventDate);
-		element.css({'left': pos+'%'});
+		element.css({'left': pos+'%', 'background': scope.event.color});
+	}
+	return {
+		restrict: 'A',
+		link : link,
+		scope: false
+	};
+})
+
+.directive('timelineEventMarkerKnob', function() {
+	function link(scope, element, attr) {
+		element.css({'border-color': scope.event.color + ' transparent transparent transparent'});
 	}
 	return {
 		restrict: 'A',
